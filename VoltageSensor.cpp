@@ -2,7 +2,7 @@
 
 VoltageSensor::VoltageSensor(uint8_t _pin) {
 	pin = _pin;
-
+}
 
 int VoltageSensor::calibrate() {
 	uint16_t acc = 0;
@@ -15,10 +15,6 @@ int VoltageSensor::calibrate() {
 
 void VoltageSensor::setZeroPoint(int _zero) {
 	zero = _zero;
-}
-
-void VoltageSensor::setSensitivity(float sens) {
-	sensitivity = sens;
 }
 
 void VoltageSensor::setVoltageReference(float volts){
@@ -39,13 +35,13 @@ void VoltageSensor::setR2Resistance(float resistance){
 
 // https://how2electronics.com/interfacing-0-25v-dc-voltage-sensor-with-arduino/
 float VoltageSensor::getVoltage(){
-    float adc_voltage = 0.0;
+  float adc_voltage = 0.0;
 	int16_t acc = 0;
 	for (int i = 0; i < 10; i++) {
 		acc += analogRead(pin);
 	}  
-    adc_voltage  = (acc * voltageReference) / 1024.0; 
+    adc_voltage  = (acc/10 * voltageReference) / adcScale; 
    // Calculate voltage at divider input
-	float V = adc_voltage / (R2/(R1+R2)) 
+	float V = adc_voltage / (r2/(r1+r2)); 
 	return V;
 }
