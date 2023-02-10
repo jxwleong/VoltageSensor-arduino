@@ -35,13 +35,14 @@ void VoltageSensor::setR2Resistance(float resistance){
 
 // https://how2electronics.com/interfacing-0-25v-dc-voltage-sensor-with-arduino/
 float VoltageSensor::getVoltage(){
-  float adc_voltage = 0.0;
+  float adcVoltage = 0.0;
+  float voltage = 0.0;
 	int16_t acc = 0;
 	for (int i = 0; i < 10; i++) {
-		acc += analogRead(pin);
+		acc += analogRead(pin) - zero;
 	}  
-    adc_voltage  = (acc/10 * voltageReference) / adcScale; 
+    adcVoltage  = (acc/10 * voltageReference) / adcScale; 
    // Calculate voltage at divider input
-	float V = adc_voltage / (r2/(r1+r2)); 
-	return V;
+	voltage = adcVoltage / (r2/(r1+r2)); 
+	return voltage;
 }
